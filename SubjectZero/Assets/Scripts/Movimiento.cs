@@ -2,7 +2,7 @@
 
 public class Movimiento : MonoBehaviour {
     public bool moviendo = false;
-    float velocidad = 8.0f;
+    float velocidad = 9.0f;
 	// Use this for initialization
 	void Start () {
 		
