@@ -2,42 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Disparos : MonoBehaviour {
+public class Disparos : MonoBehaviour
+{
 
-    public GameObject proyectilPre;
+    //public GameObject bullet;
+    public GameObject currentBulletPrefab;
 
-    private List<GameObject> Proyectiles = new List<GameObject>();
+    private List<GameObject> Projectiles = new List<GameObject>();
 
-    private float projectileVelocity;
+    public float bulletVelocity = 5.0f;
 
-	// Use this for initialization
-	void Start () {
-        projectileVelocity = 3;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    if(Input.GetMouseButtonDown(0))
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            GameObject bullet = (GameObject)Instantiate(proyectilPre, transform.position, Quaternion.identity);
-            Proyectiles.Add(bullet);
-        }	
+            Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        for(int i = 0; i < Proyectiles.Count; i++)
-        {
-            GameObject goBullet = Proyectiles[i];
-            if(goBullet != null)
-            {
-                goBullet.transform.Translate(new Vector3(0, 1) * Time.deltaTime * projectileVelocity);
+            Vector2 direction = (Vector2)((worldMousePos - transform.position));
+            direction.Normalize();
 
-                Vector3 bulletScreenPos = Camera.main.WorldToScreenPoint(goBullet.transform.position);
-                if(bulletScreenPos.y >= Screen.height || bulletScreenPos.y <= 0)
-                {
-                    DestroyObject(goBullet);
-                    Proyectiles.Remove(goBullet);
-                }
+            // Creates the bullet locally
+            GameObject bullet = (GameObject)Instantiate(
+                                    currentBulletPrefab,
+                                    transform.position + (Vector3)(direction * 0.5f),
+                                    Quaternion.identity);
 
-            }
+            // Adds velocity to the bullet
+            bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletVelocity;
         }
-	}
+    }
 }
