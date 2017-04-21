@@ -18,7 +18,13 @@ public class Player : MonoBehaviour {
 
     //BULLET
     public GameObject bullet;
-    public float speed = 5.0f;
+    //public float speed = 5.0f;
+    public Rigidbody2D bulletPrefab;
+    public float bulletSpeed = 500;
+    public float attackSpeed = 0.5f;
+    public float FireRate = 0.5f;
+    public float NextFire;
+
 
     // Use this for initialization
 
@@ -75,11 +81,15 @@ public class Player : MonoBehaviour {
 
     void disparos()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Time.time > NextFire)
         {
-           
-            Instantiate(bullet, new Vector3(Pistola.transform.position.x,Pistola.transform.position.y,this.transform.position.z), transform.rotation);
-            //transform.Translate(new Vector3(bullet.transform.position.x * 25 * Time.deltaTime, bullet.transform.position.y * 25 * Time.deltaTime, 0f));
+            NextFire = Time.time + FireRate;
+
+            Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+
+            bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
+
+
         }
     }
 }
