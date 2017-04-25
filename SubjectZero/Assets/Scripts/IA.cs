@@ -11,6 +11,12 @@ public class IA : MonoBehaviour
     public Transform targetStation;
     private float speed = 5.0f;
 
+    //Audio
+    public AudioClip sonidoDisparoIA;
+    private AudioSource source;
+    private float volLowRange = .3f;
+    private float volHighRange = .8f;
+
     [SerializeField]
     GameObject PistolaIA;
     public GameObject bullet;
@@ -25,6 +31,7 @@ public class IA : MonoBehaviour
     void Start()
     {
         enemyRotation = this.transform.localRotation;
+        source = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -62,6 +69,9 @@ public class IA : MonoBehaviour
     {
         if (Time.time > NextFire)
         {
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(sonidoDisparoIA, vol);
+
             NextFire = Time.time + FireRate;
 
             Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(PistolaIA.transform.position.x, PistolaIA.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;

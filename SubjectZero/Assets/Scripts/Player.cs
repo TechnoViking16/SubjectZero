@@ -26,6 +26,12 @@ public class Player : MonoBehaviour {
     public float FireRate = 0.5f;
     public float NextFire;
 
+    //Audio
+    public AudioClip sonidoDisparo;
+    private AudioSource source;
+    private float volLowRange =.5f;
+    private float volHighRange = 1.2f;
+
     //BARRA DE VIDA
 
     // Use this for initialization
@@ -34,6 +40,7 @@ public class Player : MonoBehaviour {
     void Start () {
         rid = this.GetComponent<Rigidbody2D>();
         cam = Camera.main;
+        source = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -85,7 +92,10 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0) && Time.time > NextFire)
         {
+            float vol = Random.Range(volLowRange,volHighRange);
+            source.PlayOneShot(sonidoDisparo, vol);
             NextFire = Time.time + FireRate;
+            
 
             Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
 
