@@ -19,13 +19,13 @@ public class Bullet : MonoBehaviour
         //OnTriggerEnter("InteriorWalls");
     }
 
-    public void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Wall" || col.gameObject.tag=="Door")
+        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door")
         {
             Destroy(gameObject);
         }
-        if(col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == "Enemy")
         {
             Destroy(gameObject);
         }
