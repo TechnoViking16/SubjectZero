@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
+    public GameObject blood;
     // Use this for initialization
 
     void Start()
@@ -21,9 +21,14 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door"|| col.gameObject.tag == "Enemy"|| col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door")
         {
             Destroy(gameObject);
+        }
+        else if( col.gameObject.tag == "Enemy" || col.gameObject.tag == "Player")
+        {
+            Destroy(gameObject);
+
         }
         
     }

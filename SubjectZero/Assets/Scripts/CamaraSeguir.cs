@@ -50,7 +50,7 @@ public class CamaraSeguir : MonoBehaviour
 
     {
 
-        Vector3 newPos = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+        Vector3 newPos = new Vector3(player.transform.position.x, player.transform.position.y, -15);
 
         this.transform.position = newPos;
 
