@@ -15,6 +15,7 @@ public class CamaraSeguir : MonoBehaviour
 
 
 
+
     // Use this for initialization
 
     void Start()
@@ -49,7 +50,7 @@ public class CamaraSeguir : MonoBehaviour
 
     {
 
-        Vector3 newPos = new Vector3(player.transform.position.x, player.transform.position.y, this.transform.position.z);
+        Vector3 newPos = new Vector3(player.transform.position.x, player.transform.position.y, -10);
 
         this.transform.position = newPos;
 
