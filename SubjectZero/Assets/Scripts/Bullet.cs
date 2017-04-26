@@ -6,21 +6,17 @@ public class Bullet : MonoBehaviour
 {
 
     public GameObject blood;
-    GameObject player;
+    public GameObject Player;
     public Player playerHealth;
     // Use this for initialization
     public int attackDamageToPlayer = 17;
     public int attackDamageToIA = 34;
 
-    void Awake()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerHealth = player.GetComponent<Player>();
-    }
-
     void Start()
     {
-
+        //Player = GameObject.FindGameObjectWithTag("Player");
+        Player = GameObject.Find("Player");
+        playerHealth = Player.GetComponent<Player>();
     }
 
     // Update is called once per frame

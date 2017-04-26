@@ -8,8 +8,6 @@ public class Player : MonoBehaviour {
     //MOVIMIENTO
     public bool moviendo = false;
     float velocidad = 10.0f;
-    float Horizontal = Input.GetAxis("Horizontal");
-    float Vertical = Input.GetAxis("Vertical");
 
 
     //CAMERA
@@ -57,6 +55,7 @@ public class Player : MonoBehaviour {
         sourceMuscia = GetComponent<AudioSource>();
         sourceMuscia.PlayOneShot(musica);
         //HEALTH
+        damageImage.enabled = false;
         currentHealth = startingHealth;
     }
 	
@@ -70,6 +69,7 @@ public class Player : MonoBehaviour {
         //DAÑO AL JUGADOR
         if(damaged)
         {
+            damageImage.enabled = true;
             damageImage.color = flashColour;
         }
         else
