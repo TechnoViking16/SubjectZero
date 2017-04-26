@@ -7,9 +7,9 @@ public class Player : MonoBehaviour {
 
     //MOVIMIENTO
     public bool moviendo = false;
-    float velocidad = 9.0f;
-    [SerializeField]
-    GameObject Pistola;
+    float velocidad = 10.0f;
+    float Horizontal = Input.GetAxis("Horizontal");
+    float Vertical = Input.GetAxis("Vertical");
 
     //CAMERA
     Vector3 mousePos;
@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
     public float attackSpeed = 0.5f;
     public float FireRate = 0.5f;
     public float NextFire;
+    [SerializeField]
+    GameObject Pistola;
 
     //Audio
     public AudioClip sonidoDisparo;
@@ -78,31 +80,57 @@ public class Player : MonoBehaviour {
     void Mov()
     {
 
+        Vector3 vel = new Vector3();
+        moviendo = false;
+
+        //NO CHOQUE
+        rid.velocity = Vector3.zero;
+        rid.angularVelocity = 0;
 
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.up * velocidad * Time.deltaTime, Space.World);
+            Debug.Log("UP");
+            Vector3 velUp = new Vector3();
+            // just use 1 to set the direction.
+            velUp.y = 1;
+            vel += velUp;
             moviendo = true;
         }
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.down * velocidad * Time.deltaTime, Space.World);
+            Vector3 velDown = new Vector3();
+            velDown.y = -1;
+            vel += velDown;
             moviendo = true;
         }
+
+        // no else here. Combinations of up/down and left/right are fine.
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left * velocidad * Time.deltaTime, Space.World);
+            Vector3 velLeft = new Vector3();
+            velLeft.x = -1;
+            vel += velLeft;
             moviendo = true;
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right * velocidad * Time.deltaTime, Space.World);
+            Vector3 velRight = new Vector3();
+            velRight.x = 1;
+            vel += velRight;
             moviendo = true;
         }
-        if (Input.GetKey(KeyCode.S) != true && Input.GetKey(KeyCode.D) != true && Input.GetKey(KeyCode.W) != true && Input.GetKey(KeyCode.A) != true)
-        {
 
-            moviendo = false;
+            if (vel.magnitude > 0.001 && moviendo == true)
+            {
+                Vector3.Normalize(vel);
+                vel *= velocidad;
+                rid.velocity = vel;
+            }
+            else
+            {
+            rid.velocity = Vector3.zero;
+            rid.angularVelocity = 0;
+            //gameObject.rid.Sleep();
         }
 
     }
