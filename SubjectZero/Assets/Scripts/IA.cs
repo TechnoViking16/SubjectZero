@@ -51,14 +51,14 @@ public class IA : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(encontrar);
+        
         
          dist = Vector3.Distance(target.position, transform.position);
-        Debug.Log(dist);
+        
 
         if (encontrar == true && dist > 7)
         {
-            Debug.Log("Le he pillado");
+            
 
 
             rotateIA();

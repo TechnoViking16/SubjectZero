@@ -31,9 +31,7 @@ public class Player : MonoBehaviour {
     //Audio
     public AudioClip sonidoDisparo;
     private AudioSource source;
-    private float volLowRange = .5f;
-    private float volHighRange = 1.2f;
-
+   
     //HEALTH
     public int startingHealth = 100;                            
     public int currentHealth;                                   
@@ -63,6 +61,7 @@ public class Player : MonoBehaviour {
         Mov();
         rotateCamera();
         disparos();
+
 
         //DAÑO AL JUGADOR
         if(damaged)
@@ -145,8 +144,8 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0) && Time.time > NextFire)
         {
-            float vol = Random.Range(volLowRange,volHighRange);
-            source.PlayOneShot(sonidoDisparo, vol);
+            
+            source.PlayOneShot(sonidoDisparo, 1);
             NextFire = Time.time + FireRate;
             
 
