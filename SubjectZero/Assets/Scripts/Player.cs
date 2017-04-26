@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     float Horizontal = Input.GetAxis("Horizontal");
     float Vertical = Input.GetAxis("Vertical");
 
+
     //CAMERA
     Vector3 mousePos;
     Vector3 direction;
@@ -31,7 +32,9 @@ public class Player : MonoBehaviour {
     //Audio
     public AudioClip sonidoDisparo;
     private AudioSource source;
-   
+    public AudioClip musica;
+    private AudioSource sourceMuscia;
+
     //HEALTH
     public int startingHealth = 100;                            
     public int currentHealth;                                   
@@ -51,7 +54,8 @@ public class Player : MonoBehaviour {
         rid = this.GetComponent<Rigidbody2D>();
         cam = Camera.main;
         source = GetComponent<AudioSource>();
-
+        sourceMuscia = GetComponent<AudioSource>();
+        sourceMuscia.PlayOneShot(musica);
         //HEALTH
         currentHealth = startingHealth;
     }
