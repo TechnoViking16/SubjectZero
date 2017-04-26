@@ -29,10 +29,20 @@ public class Player : MonoBehaviour {
     //Audio
     public AudioClip sonidoDisparo;
     private AudioSource source;
-    private float volLowRange =.5f;
+    private float volLowRange = .5f;
     private float volHighRange = 1.2f;
 
-    //BARRA DE VIDA
+    //HEALTH
+    public int startingHealth = 100;                            
+    public int currentHealth;                                   
+    public Slider healthSlider;                                 
+    public Image damageImage;                                  
+    //public AudioClip deathClip;                                
+    public float flashSpeed = 5f;                               
+    public Color flashColour = new Color(1f, 0f, 0f, 0.1f);    
+
+    bool isDead;                                               
+    bool damaged;
 
     // Use this for initialization
 
@@ -41,6 +51,9 @@ public class Player : MonoBehaviour {
         rid = this.GetComponent<Rigidbody2D>();
         cam = Camera.main;
         source = GetComponent<AudioSource>();
+
+        //HEALTH
+        currentHealth = startingHealth;
     }
 	
 	// Update is called once per frame
@@ -48,6 +61,18 @@ public class Player : MonoBehaviour {
         Mov();
         rotateCamera();
         disparos();
+
+        //DAÑO AL JUGADOR
+        if(damaged)
+        {
+            damageImage.color = flashColour;
+        }
+        else
+        {
+            damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+        }
+
+        damaged = false;
     }
 
     void Mov()
@@ -103,5 +128,28 @@ public class Player : MonoBehaviour {
 
 
         }
+    }
+
+
+    //HEALTH FUNCTIONS
+    public void TakeDamage(int amount)
+    {
+        damaged = true;
+        currentHealth -= amount;
+        healthSlider.value = currentHealth;
+
+        if(currentHealth <= 0 && !isDead)
+        {
+            Death();
+        }
+    }
+
+    void Death()
+    {
+        isDead = true;
+
+        //CANCELAMOS FUNCIONES
+        //Mov.enabled();
+        //disparos.enabled();
     }
 }
