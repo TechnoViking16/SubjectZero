@@ -177,8 +177,9 @@ public class Player : MonoBehaviour {
 
     void Death()
     {
-        isDead = true;
 
+        isDead = true;
+        Destroy(gameObject);
         //CANCELAMOS FUNCIONES
         //Mov.enabled();
         //disparos.enabled();
