@@ -4,6 +4,7 @@ using System.Collections;
 
 public class IA : MonoBehaviour
 {
+    
     public Transform target;//set target from inspector instead of looking in Update
     Quaternion enemyRotation;
     Vector2 playerPos, enemyPos;
@@ -17,6 +18,8 @@ public class IA : MonoBehaviour
     private float volLowRange = .3f;
     private float volHighRange = .8f;
 
+   
+
     [SerializeField]
     GameObject PistolaIA;
     public GameObject bullet;
@@ -28,17 +31,67 @@ public class IA : MonoBehaviour
     public float NextFire;
 
 
+    private Collider2D colisionCono;
+    public bool encontrado;
+    private bool encontrar;
+
+    private float dist;
+
     void Start()
     {
+
+        colisionCono = GetComponentInChildren<Collider2D>();
         enemyRotation = this.transform.localRotation;
         source = GetComponent<AudioSource>();
+         encontrado = false;
     }
+
+
+
 
     void Update()
     {
-        movementIA();
-        rotateIA();
+        Debug.Log(encontrar);
+        
+         dist = Vector3.Distance(target.position, transform.position);
+        Debug.Log(dist);
+
+        if (encontrar == true && dist > 7)
+        {
+            Debug.Log("Le he pillado");
+
+
+            rotateIA();
+            disparos();
+        }
+        else if (encontrar == true && dist < 7)
+        {
+            movementIA();
+            rotateIA();
+        }
+        else {
+        }
     }
+
+
+
+
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            
+            encontrar = true;
+            
+        }
+        
+    }
+
+
+   
+
+
 
     void movementIA()
     {
@@ -47,18 +100,7 @@ public class IA : MonoBehaviour
         
         playerPos = new Vector2(target.localPosition.x, target.localPosition.y);//player position 
         enemyPos = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);//enemy position
-        
-
-        
-        if (dist < 7.5)//move towards if not close by 
-        {
-            transform.position = Vector2.MoveTowards(enemyPos, playerPos, 4 * Time.deltaTime);
-            disparos();
-        }
-        if (dist < 0)//stay if too close 
-        {
-            transform.position = Vector2.MoveTowards(enemyPos, playerPos, 0 * Time.deltaTime);
-        }
+        transform.position = Vector2.MoveTowards(enemyPos, playerPos, 4 * Time.deltaTime);  
     }
 
     void rotateIA()
@@ -66,6 +108,8 @@ public class IA : MonoBehaviour
         Vector3 direction = targetStation.position - transform.position;
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
     }
+
+
 
     void disparos()
     {
