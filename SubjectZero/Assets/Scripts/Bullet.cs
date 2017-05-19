@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door")
+        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door" || col.gameObject.tag == "Fondo")
         {
             Destroy(gameObject);
         }
