@@ -35,6 +35,12 @@ public class IA : MonoBehaviour
     public bool encontrado;
     private bool encontrar;
 
+    //HEALTH
+    bool isDead;
+    bool damaged;
+    public int startingHealth = 100;
+    public int currentHealth;
+
     private float dist;
 
     void Start()
@@ -44,6 +50,9 @@ public class IA : MonoBehaviour
         enemyRotation = this.transform.localRotation;
         source = GetComponent<AudioSource>();
          encontrado = false;
+
+        //HEALTH
+        currentHealth = startingHealth;
     }
 
 
@@ -124,5 +133,27 @@ public class IA : MonoBehaviour
 
             bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
         }
+    }
+
+    //HEALTH FUNCTIONS
+    public void TakeDamage(int amount)
+    {
+        damaged = true;
+        currentHealth -= amount;
+
+        if (currentHealth <= 0 && !isDead)
+        {
+            Death();
+        }
+    }
+
+    void Death()
+    {
+
+        isDead = true;
+        Destroy(gameObject);
+        //CANCELAMOS FUNCIONES
+        //Mov.enabled();
+        //disparos.enabled();
     }
 }

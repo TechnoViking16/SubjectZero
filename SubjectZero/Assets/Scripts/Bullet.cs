@@ -6,17 +6,28 @@ public class Bullet : MonoBehaviour
 {
 
     public GameObject blood;
+
+    //PLAYER
     public GameObject Player;
     public Player playerHealth;
-    // Use this for initialization
+
+    //IA
+    /*public GameObject IA;
+    public IA IAhealth;*/
+
+    // VARIABLES OF DAMAGE
     public int attackDamageToPlayer = 17;
     public int attackDamageToIA = 34;
 
     void Start()
     {
-        //Player = GameObject.FindGameObjectWithTag("Player");
+        //DAÑO AL PLAYER
         Player = GameObject.Find("Player");
         playerHealth = Player.GetComponent<Player>();
+
+        //DAÑO A LA IA
+        /*IA = GameObject.Find("enemy");
+        IAhealth = IA.GetComponent<IA>();*/
     }
 
     // Update is called once per frame
@@ -35,12 +46,17 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
 
+            if (col.gameObject.GetComponent<IA>().currentHealth > 0)
+            {
+                col.gameObject.GetComponent<IA>().TakeDamage(attackDamageToIA);
+            }
         }
         
         else if (col.gameObject.tag == "Player")
         {
             //timer = 0.1f;
             Destroy(gameObject);
+
             if (playerHealth.currentHealth > 0)
             {
                 playerHealth.TakeDamage(attackDamageToPlayer);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -45,7 +46,13 @@ public class Player : MonoBehaviour {
     bool isDead;                                               
     bool damaged;
 
-    // Use this for initialization
+    //TEXTO DE AMMO
+    public Text AmmoCount;
+    int counterAmmo;
+
+    //RESPAWN (ACTUAL SCENE)
+    Scene ActualScene;
+    //public Vector3 respawnPoint;
 
     // Use this for initialization
     void Start () {
@@ -54,9 +61,18 @@ public class Player : MonoBehaviour {
         source = GetComponent<AudioSource>();
         sourceMuscia = GetComponent<AudioSource>();
         sourceMuscia.PlayOneShot(musica);
+
         //HEALTH
         damageImage.enabled = false;
         currentHealth = startingHealth;
+
+        //AMMO
+        counterAmmo = 60;
+        AmmoCount.text = "AMMO " + counterAmmo;
+
+        //RESPAWN (Escena Actual)
+        ActualScene = SceneManager.GetActiveScene();
+        //respawnPoint = transform.position;
     }
 	
 	// Update is called once per frame
@@ -148,7 +164,8 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0) && Time.time > NextFire)
         {
-            
+            counterAmmo--;
+            AmmoCount.text = "AMMO " + counterAmmo;
             source.PlayOneShot(sonidoDisparo, 1);
             NextFire = Time.time + FireRate;
             
@@ -179,9 +196,11 @@ public class Player : MonoBehaviour {
     {
 
         isDead = true;
-        Destroy(gameObject);
-        //CANCELAMOS FUNCIONES
-        //Mov.enabled();
-        //disparos.enabled();
+        //Destroy(gameObject);
+
+        //RESPAWNEAMOS DESPUES DE UNA PARADA DE TIEMPO
+        SceneManager.LoadScene(ActualScene.name);
+
+        //transform.position = respawnPoint;
     }
 }
