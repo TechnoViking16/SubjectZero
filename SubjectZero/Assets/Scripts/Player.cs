@@ -83,7 +83,15 @@ public class Player : MonoBehaviour {
     
     //COUNTER LEVEL
     int counterLevel;
-    //GameObject finalWall;
+    public GameObject Ammunition;
+
+    //FURIA
+    public float currentSlowMo = 0.0f;
+    public float slowTimeAllowed = 2.0f;
+    public Slider furySlider;
+    public float startingFury = 100.0f;
+    public float currentFury;
+    public Image furyImage;
 
     // Use this for initialization
     void Start () {
@@ -103,11 +111,6 @@ public class Player : MonoBehaviour {
 
         //RESPAWN (Escena Actual)
         ActualScene = SceneManager.GetActiveScene();
-        //respawnPoint = transform.position;
-
-        //SCOPE
-      //  mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
-      //  Cursor.SetCursor(cursorTexture, mousePos, cursorMode);
 
         //ARMAS EN POSESION
         scopeta = false;
@@ -122,6 +125,10 @@ public class Player : MonoBehaviour {
 
         //CAMBIO DE NIVEL
         counterLevel = 1;
+
+        //FURY INICIAL
+        furyImage.enabled = false;
+        currentFury = startingHealth;
     }
 	
 	// Update is called once per frame
@@ -129,6 +136,7 @@ public class Player : MonoBehaviour {
         Mov();
         rotateCamera();
         armas();
+        BulletTime();
 
         //DAÑO AL JUGADOR
         if (damaged)
@@ -364,9 +372,50 @@ public class Player : MonoBehaviour {
             }
                 
         }
-        else if(col.tag == "AmmoNum")
+
+        if(col.tag == "AmmoNum")
         {
-            Debug.Log("counterLevel");
+            Ammunition = GameObject.FindGameObjectWithTag("AmmoNum");
+            counterAmmo = counterAmmo + 5;
+            AmmoCount.text = counterAmmo.ToString();
+
+            //DESTRUIMOS EL PREFAB
+            Destroy(GameObject.Find("AmmoCount(Clone)"));
+        }
+    }
+
+
+    void BulletTime()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (Time.timeScale == 1.0)
+            {
+                Time.timeScale = 0.4f;
+                Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            }
+
+            if (Time.timeScale == 0.4f)
+            {
+                currentSlowMo += Time.deltaTime;
+
+                //BAJADA DE FURIA
+                currentFury = currentFury--;
+                furySlider.value = currentFury;
+
+            }
+
+            if (currentSlowMo > slowTimeAllowed)
+            {
+                currentSlowMo = 0.0f;
+                Time.timeScale = 1.0f;
+            }
         }
     }
 }
