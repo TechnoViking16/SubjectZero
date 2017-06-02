@@ -80,6 +80,10 @@ public class Player : MonoBehaviour {
 
     //PANTALLA DE MUERTE
     public Image PantallaDeMuerte;
+    
+    //COUNTER LEVEL
+    int counterLevel;
+    //GameObject finalWall;
 
     // Use this for initialization
     void Start () {
@@ -115,6 +119,9 @@ public class Player : MonoBehaviour {
 
         //PANTALLA DE MUERTE
         PantallaDeMuerte.enabled = false;
+
+        //CAMBIO DE NIVEL
+        counterLevel = 1;
     }
 	
 	// Update is called once per frame
@@ -214,13 +221,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    //PANTALLA DE MUERTE
-    /*private IEnumerator sizeImage()
-    {
-
-    }*/
-
-
     void Death()
     {
 
@@ -229,7 +229,7 @@ public class Player : MonoBehaviour {
 
         //RESPAWNEAMOS DESPUES DE UNA PARADA DE TIEMPO
         //SceneManager.LoadScene(ActualScene.name);
-        PantallaDeMuerte.enabled = true;
+        //PantallaDeMuerte.enabled = true;
 
         //transform.position = respawnPoint;
     }
@@ -240,7 +240,6 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            Debug.Log("PISTOLA MEN");
             GetComponent<SpriteRenderer>().sprite = PistolaMen;
             pistola_select = true;
             scopeta_select = false;
@@ -250,7 +249,6 @@ public class Player : MonoBehaviour {
         {
             if (scopeta == true)
             {
-                Debug.Log("ESCOPETA MEN");
                 GetComponent<SpriteRenderer>().sprite = ScopetaMen;
                 pistola_select = false;
                 scopeta_select = true;
@@ -261,8 +259,6 @@ public class Player : MonoBehaviour {
         {
             if (rifle == true)
             {
-                Debug.Log("RIFLE MEN");
-
                 //CHANGE THE SPRITE OF RIFLE
                 GetComponent<SpriteRenderer>().sprite = RifleMen;
                 pistola_select = false;
@@ -344,12 +340,17 @@ public class Player : MonoBehaviour {
         }
         else if (col.tag == "rifle")
         {
+            Debug.Log(counterLevel);
             rifle = true;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
-            Debug.Log("RIFLE MEN");
+        }
+        else if (col.tag == "finalLevel")
+        {
+                //SceneManager.LoadScene("Nivel" + counterLevel);
+                Debug.Log("counterLevel");
+                counterLevel++;
         }
 
     }
-
 }
