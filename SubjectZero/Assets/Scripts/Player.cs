@@ -50,9 +50,33 @@ public class Player : MonoBehaviour {
     public Text AmmoCount;
     int counterAmmo;
 
+    //CURSOR
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+
     //RESPAWN (ACTUAL SCENE)
     Scene ActualScene;
     //public Vector3 respawnPoint;
+
+    //ARMAS EN POSESION
+    bool scopeta;
+    bool rifle;
+    bool pistola;
+    public GameObject arma;
+
+    //ARMA SELECCIONADA
+    bool scopeta_select;
+    bool rifle_select;
+    bool pistola_select;
+
+    //DETECTOR DE ARMAS
+    Collider2D col;
+
+    //SPRITES ARMAS
+    public Sprite PistolaMen;
+    public Sprite ScopetaMen;
+    public Sprite RifleMen;
 
     // Use this for initialization
     void Start () {
@@ -73,17 +97,28 @@ public class Player : MonoBehaviour {
         //RESPAWN (Escena Actual)
         ActualScene = SceneManager.GetActiveScene();
         //respawnPoint = transform.position;
+
+        //SCOPE
+        //mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+        //Cursor.SetCursor(cursorTexture, mousePos, cursorMode);
+
+        //ARMAS EN POSESION
+        scopeta = false;
+        rifle = false;
+        pistola = true;
+
+        //ARMA SELECCIONADA
+        pistola_select = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
         Mov();
         rotateCamera();
-        disparos();
-
+        armas();
 
         //DAÑO AL JUGADOR
-        if(damaged)
+        if (damaged)
         {
             damageImage.enabled = true;
             damageImage.color = flashColour;
@@ -94,6 +129,9 @@ public class Player : MonoBehaviour {
         }
 
         damaged = false;
+
+        //SCOPE
+        //Cursor.SetCursor(cursorTexture, new Vector3(transform.position.x, transform.position.y, transform.position.z), cursorMode);
     }
 
     void Mov()
@@ -108,9 +146,7 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.W))
         {
-            Debug.Log("UP");
             Vector3 velUp = new Vector3();
-            // just use 1 to set the direction.
             velUp.y = 1;
             vel += velUp;
             moviendo = true;
@@ -149,7 +185,6 @@ public class Player : MonoBehaviour {
             {
             rid.velocity = Vector3.zero;
             rid.angularVelocity = 0;
-            //gameObject.rid.Sleep();
         }
 
     }
@@ -159,25 +194,6 @@ public class Player : MonoBehaviour {
         mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
         rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
     }
-
-    void disparos()
-    {
-        if (Input.GetMouseButtonDown(0) && Time.time > NextFire)
-        {
-            counterAmmo--;
-            AmmoCount.text = "AMMO " + counterAmmo;
-            source.PlayOneShot(sonidoDisparo, 1);
-            NextFire = Time.time + FireRate;
-            
-
-            Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
-
-            bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
-
-
-        }
-    }
-
 
     //HEALTH FUNCTIONS
     public void TakeDamage(int amount)
@@ -203,4 +219,122 @@ public class Player : MonoBehaviour {
 
         //transform.position = respawnPoint;
     }
+
+
+    void armas()
+    {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            Debug.Log("PISTOLA MEN");
+            GetComponent<SpriteRenderer>().sprite = PistolaMen;
+            pistola_select = true;
+            scopeta_select = false;
+            rifle_select = false;
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            if (scopeta == true)
+            {
+                Debug.Log("ESCOPETA MEN");
+                GetComponent<SpriteRenderer>().sprite = ScopetaMen;
+                pistola_select = false;
+                scopeta_select = true;
+                rifle_select = false;
+            }
+        }
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            if (rifle == true)
+            {
+                Debug.Log("RIFLE MEN");
+
+                //CHANGE THE SPRITE OF RIFLE
+                GetComponent<SpriteRenderer>().sprite = RifleMen;
+                pistola_select = false;
+                scopeta_select = false;
+                rifle_select = true;
+            }
+        }
+
+        //DISPAROS SEGUN LA ARMA
+        if (Input.GetMouseButtonDown(0) && Time.time > NextFire && pistola_select==true)
+        {
+            FireRate = 0.5f;
+            if (counterAmmo <= 0)
+            {
+                AmmoCount.text = "AMMO " + counterAmmo;
+            }
+            else
+            {
+                counterAmmo--;
+                AmmoCount.text = "AMMO " + counterAmmo;
+                source.PlayOneShot(sonidoDisparo, 1);
+                NextFire = Time.time + FireRate;
+
+
+                Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+
+                bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
+            }
+        }
+        else if(Input.GetMouseButtonDown(0) && Time.time > NextFire && scopeta_select == true)
+        {
+            if (counterAmmo <= 0)
+            {
+                AmmoCount.text = "AMMO " + counterAmmo;
+            }
+            else
+            {
+                counterAmmo--;
+                AmmoCount.text = "AMMO " + counterAmmo;
+                source.PlayOneShot(sonidoDisparo, 1);
+                NextFire = Time.time + FireRate;
+
+
+                Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+
+                bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
+            }
+        }
+        else if (Input.GetMouseButtonDown(0) && Time.time > NextFire && rifle_select == true)
+        {
+            FireRate = 0.2f;
+            if (counterAmmo <= 0)
+            {
+                AmmoCount.text = "AMMO " + counterAmmo;
+            }
+            else
+            {
+                counterAmmo--;
+                AmmoCount.text = "AMMO " + counterAmmo;
+                source.PlayOneShot(sonidoDisparo, 1);
+                NextFire = Time.time + FireRate;
+
+
+                Rigidbody2D bPrefab = Instantiate(bulletPrefab, new Vector3(Pistola.transform.position.x, Pistola.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+
+                bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
+            }
+        }
+
+    }
+
+    //RECOGIDA DE ARMAS
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+
+        if(col.tag == "scopeta")
+        {
+            scopeta = true;
+        }
+        else if (col.tag == "rifle")
+        {
+            rifle = true;
+            arma = GameObject.FindGameObjectWithTag("rifle");
+            Destroy(arma);
+            Debug.Log("RIFLE MEN");
+        }
+
+    }
+
 }
