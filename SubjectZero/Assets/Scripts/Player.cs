@@ -78,6 +78,9 @@ public class Player : MonoBehaviour {
     public Sprite ScopetaMen;
     public Sprite RifleMen;
 
+    //PANTALLA DE MUERTE
+    public Image PantallaDeMuerte;
+
     // Use this for initialization
     void Start () {
         rid = this.GetComponent<Rigidbody2D>();
@@ -109,6 +112,9 @@ public class Player : MonoBehaviour {
 
         //ARMA SELECCIONADA
         pistola_select = true;
+
+        //PANTALLA DE MUERTE
+        PantallaDeMuerte.enabled = false;
     }
 	
 	// Update is called once per frame
@@ -208,6 +214,13 @@ public class Player : MonoBehaviour {
         }
     }
 
+    //PANTALLA DE MUERTE
+    /*private IEnumerator sizeImage()
+    {
+
+    }*/
+
+
     void Death()
     {
 
@@ -215,10 +228,12 @@ public class Player : MonoBehaviour {
         //Destroy(gameObject);
 
         //RESPAWNEAMOS DESPUES DE UNA PARADA DE TIEMPO
-        SceneManager.LoadScene(ActualScene.name);
+        //SceneManager.LoadScene(ActualScene.name);
+        PantallaDeMuerte.enabled = true;
 
         //transform.position = respawnPoint;
     }
+
 
 
     void armas()
@@ -296,7 +311,7 @@ public class Player : MonoBehaviour {
                 bPrefab.GetComponent<Rigidbody2D>().AddForce(transform.right * bulletSpeed);
             }
         }
-        else if (Input.GetMouseButtonDown(0) && Time.time > NextFire && rifle_select == true)
+        else if (Input.GetMouseButton(0) && Time.time > NextFire && rifle_select == true)
         {
             FireRate = 0.2f;
             if (counterAmmo <= 0)
