@@ -43,6 +43,13 @@ public class IA : MonoBehaviour
 
     private float dist;
 
+    //AMMO
+    public Rigidbody2D ammoPrefab;
+    public int ammoNum;
+
+    
+
+
     void Start()
     {
 
@@ -53,6 +60,10 @@ public class IA : MonoBehaviour
 
         //HEALTH
         currentHealth = startingHealth;
+
+        //AMMO
+        ammoNum = 5;
+        //ammo.SetActive(false);
     }
 
 
@@ -61,15 +72,10 @@ public class IA : MonoBehaviour
     void Update()
     {
         
-        
          dist = Vector3.Distance(target.position, transform.position);
         
-
         if (encontrar == true && dist > 7)
         {
-            
-
-
             rotateIA();
             disparos();
         }
@@ -152,6 +158,10 @@ public class IA : MonoBehaviour
 
         isDead = true;
         Destroy(gameObject);
+
+        Rigidbody2D ammoPre = Instantiate(ammoPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+
+        //ammo.SetActive(true);
         //CANCELAMOS FUNCIONES
         //Mov.enabled();
         //disparos.enabled();

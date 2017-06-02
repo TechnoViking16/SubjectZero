@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
     //CURSOR
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    public Vector3 hotSpot = Vector3.zero;
 
     //RESPAWN (ACTUAL SCENE)
     Scene ActualScene;
@@ -99,15 +99,15 @@ public class Player : MonoBehaviour {
 
         //AMMO
         counterAmmo = 60;
-        AmmoCount.text = "AMMO " + counterAmmo;
+        AmmoCount.text = counterAmmo.ToString(); 
 
         //RESPAWN (Escena Actual)
         ActualScene = SceneManager.GetActiveScene();
         //respawnPoint = transform.position;
 
         //SCOPE
-        //mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
-        //Cursor.SetCursor(cursorTexture, mousePos, cursorMode);
+      //  mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+      //  Cursor.SetCursor(cursorTexture, mousePos, cursorMode);
 
         //ARMAS EN POSESION
         scopeta = false;
@@ -143,8 +143,7 @@ public class Player : MonoBehaviour {
 
         damaged = false;
 
-        //SCOPE
-        //Cursor.SetCursor(cursorTexture, new Vector3(transform.position.x, transform.position.y, transform.position.z), cursorMode);
+       
     }
 
     void Mov()
@@ -205,7 +204,11 @@ public class Player : MonoBehaviour {
     void rotateCamera()
     {
         mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+        //SCOPE
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
+       
+        
     }
 
     //HEALTH FUNCTIONS
@@ -273,12 +276,12 @@ public class Player : MonoBehaviour {
             FireRate = 0.5f;
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -292,12 +295,12 @@ public class Player : MonoBehaviour {
         {
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -312,12 +315,12 @@ public class Player : MonoBehaviour {
             FireRate = 0.2f;
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -340,17 +343,30 @@ public class Player : MonoBehaviour {
         }
         else if (col.tag == "rifle")
         {
-            Debug.Log(counterLevel);
+            //Debug.Log(counterLevel);
             rifle = true;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
         }
-        else if (col.tag == "finalLevel")
+        else if (col.name == "finalLevel")
         {
-                //SceneManager.LoadScene("Nivel" + counterLevel);
-                Debug.Log("counterLevel");
-                counterLevel++;
+            switch (counterLevel)
+            {
+                case 1:
+                    counterLevel++;
+                    SceneManager.LoadScene("Nivel" + counterLevel);
+                    Debug.Log("Nivel"+counterLevel);
+                break;
+                case 2:
+                    counterLevel++;
+                    SceneManager.LoadScene("Nivel" + counterLevel);
+                break;
+            }
+                
         }
-
+        else if(col.tag == "AmmoNum")
+        {
+            Debug.Log("counterLevel");
+        }
     }
 }
