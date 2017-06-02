@@ -13,24 +13,6 @@ public class BulletTimePlayer : MonoBehaviour
 
     void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Time.timeScale = 0.4f;
-            Time.fixedDeltaTime = 0.02F * Time.timeScale;
-        }
-        if (Time.timeScale == 0.4f)
-        {
-            currentSlowMo += Time.deltaTime;
-        }
-
-        if (currentSlowMo > slowTimeAllowed)
-        {
-            currentSlowMo = 0.0f;
-            Time.timeScale = 1.0f;
-        }
-    }
-    */
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Time.timeScale == 1.0)
