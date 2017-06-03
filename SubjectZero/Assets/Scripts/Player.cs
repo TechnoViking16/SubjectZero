@@ -357,7 +357,6 @@ public class Player : MonoBehaviour {
                 case 1:
                     counterLevel++;
                     SceneManager.LoadScene("Nivel" + counterLevel);
-                    Debug.Log("Nivel"+counterLevel);
                 break;
                 case 2:
                     counterLevel++;
