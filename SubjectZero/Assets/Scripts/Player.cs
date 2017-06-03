@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
     //CURSOR
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    public Vector3 hotSpot = Vector3.zero;
 
     //RESPAWN (ACTUAL SCENE)
     Scene ActualScene;
@@ -83,7 +83,15 @@ public class Player : MonoBehaviour {
     
     //COUNTER LEVEL
     int counterLevel;
-    //GameObject finalWall;
+    public GameObject Ammunition;
+
+    //FURIA
+    public float currentSlowMo = 0.0f;
+    public float slowTimeAllowed = 2.0f;
+    public Slider furySlider;
+    public float startingFury = 100.0f;
+    public float currentFury;
+    public Image furyImage;
 
     // Use this for initialization
     void Start () {
@@ -99,15 +107,10 @@ public class Player : MonoBehaviour {
 
         //AMMO
         counterAmmo = 60;
-        AmmoCount.text = "AMMO " + counterAmmo;
+        AmmoCount.text = counterAmmo.ToString(); 
 
         //RESPAWN (Escena Actual)
         ActualScene = SceneManager.GetActiveScene();
-        //respawnPoint = transform.position;
-
-        //SCOPE
-        //mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
-        //Cursor.SetCursor(cursorTexture, mousePos, cursorMode);
 
         //ARMAS EN POSESION
         scopeta = false;
@@ -122,6 +125,10 @@ public class Player : MonoBehaviour {
 
         //CAMBIO DE NIVEL
         counterLevel = 1;
+
+        //FURY INICIAL
+        furyImage.enabled = false;
+        currentFury = startingHealth;
     }
 	
 	// Update is called once per frame
@@ -129,6 +136,7 @@ public class Player : MonoBehaviour {
         Mov();
         rotateCamera();
         armas();
+        BulletTime();
 
         //DAÑO AL JUGADOR
         if (damaged)
@@ -143,8 +151,7 @@ public class Player : MonoBehaviour {
 
         damaged = false;
 
-        //SCOPE
-        //Cursor.SetCursor(cursorTexture, new Vector3(transform.position.x, transform.position.y, transform.position.z), cursorMode);
+       
     }
 
     void Mov()
@@ -205,7 +212,11 @@ public class Player : MonoBehaviour {
     void rotateCamera()
     {
         mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+        //SCOPE
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
+       
+        
     }
 
     //HEALTH FUNCTIONS
@@ -273,12 +284,12 @@ public class Player : MonoBehaviour {
             FireRate = 0.5f;
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -292,12 +303,12 @@ public class Player : MonoBehaviour {
         {
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -312,12 +323,12 @@ public class Player : MonoBehaviour {
             FireRate = 0.2f;
             if (counterAmmo <= 0)
             {
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
             }
             else
             {
                 counterAmmo--;
-                AmmoCount.text = "AMMO " + counterAmmo;
+                AmmoCount.text = counterAmmo.ToString();
                 source.PlayOneShot(sonidoDisparo, 1);
                 NextFire = Time.time + FireRate;
 
@@ -340,17 +351,71 @@ public class Player : MonoBehaviour {
         }
         else if (col.tag == "rifle")
         {
-            Debug.Log(counterLevel);
+            //Debug.Log(counterLevel);
             rifle = true;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
         }
-        else if (col.tag == "finalLevel")
+        else if (col.name == "finalLevel")
         {
-                //SceneManager.LoadScene("Nivel" + counterLevel);
-                Debug.Log("counterLevel");
-                counterLevel++;
+            switch (counterLevel)
+            {
+                case 1:
+                    counterLevel++;
+                    SceneManager.LoadScene("Nivel" + counterLevel);
+                    Debug.Log("Nivel"+counterLevel);
+                break;
+                case 2:
+                    counterLevel++;
+                    SceneManager.LoadScene("Nivel" + counterLevel);
+                break;
+            }
+                
         }
 
+        if(col.tag == "AmmoNum")
+        {
+            Ammunition = GameObject.FindGameObjectWithTag("AmmoNum");
+            counterAmmo = counterAmmo + 5;
+            AmmoCount.text = counterAmmo.ToString();
+
+            //DESTRUIMOS EL PREFAB
+            Destroy(GameObject.Find("AmmoCount(Clone)"));
+        }
+    }
+
+
+    void BulletTime()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (Time.timeScale == 1.0)
+            {
+                Time.timeScale = 0.4f;
+                Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            }
+
+            if (Time.timeScale == 0.4f)
+            {
+                currentSlowMo += Time.deltaTime;
+
+                //BAJADA DE FURIA
+                currentFury = currentFury--;
+                furySlider.value = currentFury;
+
+            }
+
+            if (currentSlowMo > slowTimeAllowed)
+            {
+                currentSlowMo = 0.0f;
+                Time.timeScale = 1.0f;
+            }
+        }
     }
 }

@@ -11,10 +11,6 @@ public class Bullet : MonoBehaviour
     public GameObject Player;
     public Player playerHealth;
 
-    //IA
-    /*public GameObject IA;
-    public IA IAhealth;*/
-
     // VARIABLES OF DAMAGE
     public int attackDamageToPlayer = 17;
     public int attackDamageToIA = 34;
