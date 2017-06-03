@@ -48,7 +48,7 @@ public class Player : MonoBehaviour {
 
     //TEXTO DE AMMO
     public Text AmmoCount;
-    int counterAmmo;
+    static public int counterAmmo = 60;
 
     //CURSOR
     public Texture2D cursorTexture;
@@ -60,9 +60,9 @@ public class Player : MonoBehaviour {
     //public Vector3 respawnPoint;
 
     //ARMAS EN POSESION
-    bool scopeta;
-    bool rifle;
-    bool pistola;
+    static public int scopeta = 0;
+    static public int rifle = 0;
+    static public int pistola = 0;
     public GameObject arma;
 
     //ARMA SELECCIONADA
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour {
     public Image PantallaDeMuerte;
     
     //COUNTER LEVEL
-    int counterLevel;
+    public int counterLevel;
     public GameObject Ammunition;
 
     //FURIA
@@ -106,16 +106,10 @@ public class Player : MonoBehaviour {
         currentHealth = startingHealth;
 
         //AMMO
-        counterAmmo = 60;
         AmmoCount.text = counterAmmo.ToString(); 
 
         //RESPAWN (Escena Actual)
         ActualScene = SceneManager.GetActiveScene();
-
-        //ARMAS EN POSESION
-        scopeta = false;
-        rifle = false;
-        pistola = true;
 
         //ARMA SELECCIONADA
         pistola_select = true;
@@ -258,7 +252,7 @@ public class Player : MonoBehaviour {
         }
         else if (Input.GetKey(KeyCode.Alpha2))
         {
-            if (scopeta == true)
+            if (scopeta == 1)
             {
                 GetComponent<SpriteRenderer>().sprite = ScopetaMen;
                 pistola_select = false;
@@ -268,7 +262,7 @@ public class Player : MonoBehaviour {
         }
         else if (Input.GetKey(KeyCode.Alpha3))
         {
-            if (rifle == true)
+            if (rifle == 1)
             {
                 //CHANGE THE SPRITE OF RIFLE
                 GetComponent<SpriteRenderer>().sprite = RifleMen;
@@ -347,12 +341,12 @@ public class Player : MonoBehaviour {
 
         if(col.tag == "scopeta")
         {
-            scopeta = true;
+            scopeta = 1;
         }
         else if (col.tag == "rifle")
         {
             //Debug.Log(counterLevel);
-            rifle = true;
+            rifle = 1;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
         }
