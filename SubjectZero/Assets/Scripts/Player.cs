@@ -154,7 +154,7 @@ public class Player : MonoBehaviour {
             armas();
             BulletTime();
         }
-            
+
         //DAÑO AL JUGADOR
         if (damaged)
         {
@@ -418,7 +418,7 @@ public class Player : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space))
         {
 
-            if (Time.timeScale == 1.0)
+            if (Time.timeScale == 1.0f)
             {
                 Time.timeScale = 0.4f;
                 Time.fixedDeltaTime = Time.timeScale * 0.02f;

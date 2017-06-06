@@ -11,11 +11,16 @@ public class PauseMenu : MonoBehaviour
     //CURSOR
     public CursorMode cursorMode = CursorMode.Auto;
     private bool paused = false;
+    public bool pausedEstado = false;
+
+    //ACTUAL SCENE
+    Scene ActualScene;
 
     // Use this for initialization
     void Start()
     {
-
+        Time.timeScale = 1.0f;
+        ActualScene = SceneManager.GetActiveScene();
         PauseUI.SetActive(false);
     }
 
@@ -26,19 +31,23 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             paused = !paused;
-        }
-        if (paused)
-        {
-            PlayerPrefs.SetInt("pause", 1);
-            PauseUI.SetActive(true);
-            Time.timeScale = 0;           
-        }
-        if(!paused)
-        {
-            PauseUI.SetActive(false);
-            PlayerPrefs.SetInt("pause", 0);
-            
-        }
+            if (paused)
+            {
+                PlayerPrefs.SetInt("pause", 1);
+                pausedEstado = true;
+                PauseUI.SetActive(true);
+                Time.timeScale = 0;
+            }
+            if (!paused)
+            {
+                PauseUI.SetActive(false);
+                PlayerPrefs.SetInt("pause", 0);
+                pausedEstado = false;
+                Time.timeScale = 1.0f;
+                /*Time.fixedDeltaTime = Time.timeScale * 0.02f;*/
+
+            }
+        }   
     }
 
     public void Resume()
@@ -47,14 +56,17 @@ public class PauseMenu : MonoBehaviour
     }
     public void Quit()
     {
+        Time.timeScale = 1.0f;
         Application.Quit();
     }
     public void Restart()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(1);
     }
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(ActualScene.name);
     }
 }
