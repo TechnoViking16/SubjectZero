@@ -11,6 +11,10 @@ public class Bullet : MonoBehaviour
     public GameObject Player;
     public Player playerHealth;
 
+    //BOSS
+    public GameObject Boss;
+    public Boss bossHealth;
+
     // VARIABLES OF DAMAGE
     public int attackDamageToPlayer = 17;
     public int attackDamageToIA = 34;
@@ -18,6 +22,13 @@ public class Bullet : MonoBehaviour
     //SPRITES DMG
     public Sprite DMG1;
     public Sprite DMG2;
+    public Sprite DMG3;
+    public Sprite DMG4;
+
+    //DAÑO BOSS
+    float currentDelay = 0f;
+    bool colourChangeCollision = false;
+    public float colourChangeDelay = 0.5f;
 
     void Start()
     {
@@ -25,19 +36,20 @@ public class Bullet : MonoBehaviour
         Player = GameObject.Find("Player");
         playerHealth = Player.GetComponent<Player>();
 
-        //DAÑO A LA IA
-        /*IA = GameObject.Find("enemy");
-        IAhealth = IA.GetComponent<IA>();*/
+        //BOSS
+        Boss = GameObject.Find("Boss");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //Boss.GetComponent<Boss>()<SpriteRenderer>().sprite = DMG4;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        currentDelay = Time.time + colourChangeDelay;
+
         if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Door" || col.gameObject.tag == "Fondo")
         {
             Destroy(gameObject);
@@ -76,6 +88,29 @@ public class Bullet : MonoBehaviour
             }
         }
 
+        if (col.gameObject.tag == "boss")
+        {
+            Destroy(gameObject);
+            if (col.gameObject.GetComponent<Boss>().currentHealth > 0)
+            {
+                col.gameObject.GetComponent<Boss>().TakeDamage(3);
+                col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG3;
+                StartCoroutine(GoToTheMenu());
+                col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG4;
+                colourChangeCollision = false;
+
+            }
+        }
     }
+
+
+
+
+    IEnumerator GoToTheMenu()
+    {
+        yield return new WaitForSeconds(10f);
+    }
+
+
 }
 
