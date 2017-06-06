@@ -112,7 +112,7 @@ public class IA : MonoBehaviour
         
         playerPos = new Vector2(target.localPosition.x, target.localPosition.y);//player position 
         enemyPos = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);//enemy position
-        transform.position = Vector2.MoveTowards(enemyPos, playerPos, 4 * Time.deltaTime);  
+        transform.position = Vector2.MoveTowards(enemyPos, playerPos, 6 * Time.deltaTime);  
     }
 
     void rotateIA()

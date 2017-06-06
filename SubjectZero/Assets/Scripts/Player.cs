@@ -251,7 +251,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void Death()
+    public void Death()
     {
 
         isDead = true;
