@@ -81,7 +81,8 @@ public class Player : MonoBehaviour {
     //IMAGENES ARMAS INVENTARIO
     public Image rifleSprite;
     public Image blackImage;
-    public Image whiteImage;
+    public Image whiteImagePistola;
+    public Image whiteImageRifle;
     static public bool rifleImage = false;
 
     //PANTALLA DE MUERTE
@@ -136,9 +137,12 @@ public class Player : MonoBehaviour {
         if(rifleImage == false)
         {
             rifleSprite.enabled = false;
-            whiteImage.enabled = false;
+            whiteImageRifle.enabled = false;
             blackImage.enabled = false;
         }
+
+        //ARMA SELECCIONADA
+        whiteImagePistola.color = new Color(255, 195, 0, 255);
     }
 	
 	// Update is called once per frame
@@ -270,7 +274,8 @@ public class Player : MonoBehaviour {
             pistola_select = true;
             scopeta_select = false;
             rifle_select = false;
-            whiteImage.color = new Color(255, 195, 0, 255);
+            whiteImagePistola.color = new Color(255, 195, 0, 255);
+            whiteImageRifle.color = new Color(255, 255, 255, 255);
 
         }
         else if (Input.GetKey(KeyCode.Alpha2))
@@ -292,6 +297,8 @@ public class Player : MonoBehaviour {
                 pistola_select = false;
                 scopeta_select = false;
                 rifle_select = true;
+                whiteImageRifle.color = new Color(255, 195, 0, 255);
+                whiteImagePistola.color = new Color(255, 255, 255, 255);
             }
         }
 
@@ -374,7 +381,7 @@ public class Player : MonoBehaviour {
             Destroy(arma);
             rifleImage = true;
             rifleSprite.enabled = true;
-            whiteImage.enabled = true;
+            whiteImageRifle.enabled = true;
             blackImage.enabled = true;
 
         }
@@ -441,7 +448,7 @@ public class Player : MonoBehaviour {
         }
         if (furiaActive == true)
         {
-            currentFury -= 0.1f;
+            currentFury -= 0.2f;
             furySlider.value = currentFury;
 
             if(currentFury<=0)

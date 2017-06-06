@@ -51,13 +51,16 @@ public class Bullet : MonoBehaviour
                 col.gameObject.GetComponent<IA>().TakeDamage(attackDamageToIA);
                 if(col.gameObject.GetComponent<IA>().currentHealth == 66)
                 {
-                    //GetComponent<SpriteRenderer>().sprite = ScopetaMen;
                     col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG1;
 
                 }
                 else if(col.gameObject.GetComponent<IA>().currentHealth == 32)
                 {
                     col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG2;
+                }
+                else
+                {
+                    Player.GetComponent<Player>().currentFury += 10;
                 }
             }
         }
