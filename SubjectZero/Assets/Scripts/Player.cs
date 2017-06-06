@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
     public Image PantallaDeMuerte;
     
     //COUNTER LEVEL
-    public int counterLevel;
+    static public int counterLevel = 1;
     public GameObject Ammunition;
 
     //FURIA
@@ -124,9 +124,6 @@ public class Player : MonoBehaviour {
 
         //PANTALLA DE MUERTE
         PantallaDeMuerte.enabled = false;
-
-        //CAMBIO DE NIVEL
-        counterLevel = 1;
 
         //FURY INICIAL
         furyImage.enabled = false;
