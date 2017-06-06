@@ -384,7 +384,10 @@ public class Player : MonoBehaviour {
         }
         else if (col.name == "finalLevel")
         {
-            switch (counterLevel)
+            Debug.Log(counterLevel);
+            counterLevel++;
+            SceneManager.LoadScene("Nivel" + counterLevel);
+            /*switch (counterLevel)
             {
                 case 1:
                     counterLevel++;
@@ -394,7 +397,7 @@ public class Player : MonoBehaviour {
                     counterLevel++;
                     SceneManager.LoadScene("Nivel" + counterLevel);
                 break;
-            }
+            }*/
                 
         }
 
