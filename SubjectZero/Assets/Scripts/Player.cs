@@ -143,11 +143,14 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Mov();
-        rotateCamera();
-        armas();
-        BulletTime();
-
+        if (PlayerPrefs.GetInt("pause") == 0 )
+        {
+            Mov();
+            rotateCamera();
+            armas();
+            BulletTime();
+        }
+            
         //DAÑO AL JUGADOR
         if (damaged)
         {
@@ -221,11 +224,13 @@ public class Player : MonoBehaviour {
 
     void rotateCamera()
     {
-        mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
-        //SCOPE
-        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
-        rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
+
        
+            mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+            //SCOPE
+            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+            rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
+        
         
     }
 
@@ -446,6 +451,7 @@ public class Player : MonoBehaviour {
                 furiaActive = false;
                 furyImage.enabled = false;
             }
+            }
         }
     }
-}
+

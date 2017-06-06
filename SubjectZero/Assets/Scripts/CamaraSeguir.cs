@@ -11,9 +11,10 @@ public class CamaraSeguir : MonoBehaviour
 
     GameObject player;
 
+
     bool followPlayer = true;
 
-
+    
 
 
     // Use this for initialization
@@ -31,6 +32,18 @@ public class CamaraSeguir : MonoBehaviour
 
     void Update()
     {
+
+        
+
+        if (PlayerPrefs.GetInt("pause") == 1)
+        {
+
+            followPlayer = false;
+        }
+        else {
+            followPlayer = true;
+        }
+
 
         if (followPlayer == true)
 
