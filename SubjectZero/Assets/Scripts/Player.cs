@@ -275,7 +275,7 @@ public class Player : MonoBehaviour {
             whiteImageRifle.color = new Color(255, 255, 255, 255);
 
         }
-        else if (Input.GetKey(KeyCode.Alpha2))
+        else if (Input.GetKey(KeyCode.Alpha3))
         {
             if (scopeta == 1)
             {
@@ -285,7 +285,7 @@ public class Player : MonoBehaviour {
                 rifle_select = false;
             }
         }
-        else if (Input.GetKey(KeyCode.Alpha3))
+        else if (Input.GetKey(KeyCode.Alpha2))
         {
             if (rifle == 1)
             {
