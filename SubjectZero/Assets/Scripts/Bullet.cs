@@ -15,6 +15,10 @@ public class Bullet : MonoBehaviour
     public int attackDamageToPlayer = 17;
     public int attackDamageToIA = 34;
 
+    //SPRITES DMG
+    public Sprite DMG1;
+    public Sprite DMG2;
+
     void Start()
     {
         //DAÑO AL PLAYER
@@ -45,6 +49,16 @@ public class Bullet : MonoBehaviour
             if (col.gameObject.GetComponent<IA>().currentHealth > 0)
             {
                 col.gameObject.GetComponent<IA>().TakeDamage(attackDamageToIA);
+                if(col.gameObject.GetComponent<IA>().currentHealth == 66)
+                {
+                    //GetComponent<SpriteRenderer>().sprite = ScopetaMen;
+                    col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG1;
+
+                }
+                else if(col.gameObject.GetComponent<IA>().currentHealth == 32)
+                {
+                    col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG2;
+                }
             }
         }
         

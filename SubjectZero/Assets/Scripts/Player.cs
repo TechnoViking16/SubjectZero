@@ -78,6 +78,12 @@ public class Player : MonoBehaviour {
     public Sprite ScopetaMen;
     public Sprite RifleMen;
 
+    //IMAGENES ARMAS INVENTARIO
+    public Image rifleSprite;
+    public Image blackImage;
+    public Image whiteImage;
+    static public bool rifleImage = false;
+
     //PANTALLA DE MUERTE
     public Image PantallaDeMuerte;
     
@@ -92,6 +98,7 @@ public class Player : MonoBehaviour {
     public float startingFury = 100.0f;
     public float currentFury;
     public Image furyImage;
+    bool furiaActive;
 
     // Use this for initialization
     void Start () {
@@ -123,6 +130,15 @@ public class Player : MonoBehaviour {
         //FURY INICIAL
         furyImage.enabled = false;
         currentFury = startingHealth;
+        furiaActive = false;
+
+        //RIFLE DESACTIVADO DE PRIMERAS
+        if(rifleImage == false)
+        {
+            rifleSprite.enabled = false;
+            whiteImage.enabled = false;
+            blackImage.enabled = false;
+        }
     }
 	
 	// Update is called once per frame
@@ -234,7 +250,7 @@ public class Player : MonoBehaviour {
 
         //RESPAWNEAMOS DESPUES DE UNA PARADA DE TIEMPO
         //SceneManager.LoadScene(ActualScene.name);
-        //PantallaDeMuerte.enabled = true;
+        PantallaDeMuerte.enabled = true;
 
         //transform.position = respawnPoint;
     }
@@ -249,6 +265,8 @@ public class Player : MonoBehaviour {
             pistola_select = true;
             scopeta_select = false;
             rifle_select = false;
+            whiteImage.color = new Color(255, 195, 0, 255);
+
         }
         else if (Input.GetKey(KeyCode.Alpha2))
         {
@@ -314,7 +332,7 @@ public class Player : MonoBehaviour {
         }
         else if (Input.GetMouseButton(0) && Time.time > NextFire && rifle_select == true)
         {
-            FireRate = 0.2f;
+            FireRate = 0.15f;
             if (counterAmmo <= 0)
             {
                 AmmoCount.text = counterAmmo.ToString();
@@ -349,6 +367,11 @@ public class Player : MonoBehaviour {
             rifle = 1;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
+            rifleImage = true;
+            rifleSprite.enabled = true;
+            whiteImage.enabled = true;
+            blackImage.enabled = true;
+
         }
         else if (col.name == "finalLevel")
         {
@@ -387,27 +410,41 @@ public class Player : MonoBehaviour {
             {
                 Time.timeScale = 0.4f;
                 Time.fixedDeltaTime = Time.timeScale * 0.02f;
+                furiaActive = true;
+                furyImage.enabled = true;
             }
             else
             {
                 Time.timeScale = 1.0f;
                 Time.fixedDeltaTime = Time.timeScale * 0.02f;
+                furiaActive = false;
+                furyImage.enabled = false;
             }
 
             if (Time.timeScale == 0.4f)
             {
                 currentSlowMo += Time.deltaTime;
-
-                //BAJADA DE FURIA
-                currentFury = currentFury--;
-                furySlider.value = currentFury;
-
             }
 
             if (currentSlowMo > slowTimeAllowed)
             {
                 currentSlowMo = 0.0f;
                 Time.timeScale = 1.0f;
+            }
+
+           
+        }
+        if (furiaActive == true)
+        {
+            currentFury -= 0.1f;
+            furySlider.value = currentFury;
+
+            if(currentFury<=0)
+            {
+                Time.timeScale = 1.0f;
+                Time.fixedDeltaTime = Time.timeScale * 0.02f;
+                furiaActive = false;
+                furyImage.enabled = false;
             }
         }
     }

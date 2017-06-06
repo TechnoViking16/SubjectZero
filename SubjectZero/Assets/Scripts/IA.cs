@@ -47,9 +47,6 @@ public class IA : MonoBehaviour
     public Rigidbody2D ammoPrefab;
     public int ammoNum;
 
-    
-
-
     void Start()
     {
 
