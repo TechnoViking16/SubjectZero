@@ -35,7 +35,7 @@ public class CamaraSeguir : MonoBehaviour
 
         
 
-        if (PlayerPrefs.GetInt("pause") == 1)
+       /* if (PlayerPrefs.GetInt("pause") == 1)
         {
 
             followPlayer = false;
@@ -45,7 +45,7 @@ public class CamaraSeguir : MonoBehaviour
         }
 
 
-        if (followPlayer == true)
+        if (followPlayer == true)*/
 
             camFollowPlayer();
 

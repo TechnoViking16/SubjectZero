@@ -94,23 +94,8 @@ public class Bullet : MonoBehaviour
             if (col.gameObject.GetComponent<Boss>().currentHealth > 0)
             {
                 col.gameObject.GetComponent<Boss>().TakeDamage(3);
-                col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG3;
-                StartCoroutine(GoToTheMenu());
-                col.gameObject.GetComponent<SpriteRenderer>().sprite = DMG4;
-                colourChangeCollision = false;
-
             }
         }
     }
-
-
-
-
-    IEnumerator GoToTheMenu()
-    {
-        yield return new WaitForSeconds(10f);
-    }
-
-
 }
 

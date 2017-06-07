@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
@@ -70,6 +73,14 @@ public class Boss : MonoBehaviour
 
     //SPRITES
     public Sprite DMG1;
+
+    //IMAGEN FINAL
+    public Image IMG1;
+    float delay = 3;
+    bool timerEnabled;
+
+    //PARED DESTRUCTIVA
+    public GameObject wallDestruct;
 
     void Start()
     {
@@ -197,9 +208,8 @@ public class Boss : MonoBehaviour
 
     void Death()
     {
-
         isDead = true;
-        //Destroy(gameObject);
+        Destroy(wallDestruct);
     }
 
     void rotateIA()
@@ -208,16 +218,14 @@ public class Boss : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
     }
 
-
-    /*I9Enumerator TakeDamageBoss(int damage, int seconds)
+    //DELAY
+    IEnumerator Delay()
     {
-        gotHit = true;
-        //substract damage from health
-        currentHealth -= damage;
-        //wait for x seconds
-        gameObject.GetComponent<SpriteRenderer>().sprite = DMG3;
-        yield return new WaitForSeconds(seconds);
-        //after x seconds, the player can get hit again
-        gotHit = false;
-    }*/
+        yield return new WaitForSeconds(5);
+    }
+
+    void OnPreRender()
+    {
+        timerEnabled = true;
+    }
 }

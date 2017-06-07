@@ -101,6 +101,10 @@ public class Player : MonoBehaviour {
     public Image furyImage;
     bool furiaActive;
 
+    //FINAL IMAGE
+    public Image finalImage;
+    bool final;
+
     // Use this for initialization
     void Start () {
         rid = this.GetComponent<Rigidbody2D>();
@@ -140,30 +144,38 @@ public class Player : MonoBehaviour {
 
         //ARMA SELECCIONADA
         whiteImagePistola.color = new Color(255, 195, 0, 255);
+
+        //FINAL IMAGE
+        final = false;
+        finalImage.enabled = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (PlayerPrefs.GetInt("pause") == 0 )
+        if(final == false)
         {
-            Mov();
-            rotateCamera();
-            armas();
-            BulletTime();
-        }
+            if (PlayerPrefs.GetInt("pause") == 0)
+            {
+                Mov();
+                rotateCamera();
+                armas();
+                BulletTime();
+            }
 
-        //DAÑO AL JUGADOR
-        if (damaged)
-        {
-            damageImage.enabled = true;
-            damageImage.color = flashColour;
-        }
-        else
-        {
-            damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-        }
+            //DAÑO AL JUGADOR
+            if (damaged)
+            {
+                damageImage.enabled = true;
+                damageImage.color = flashColour;
+            }
+            else
+            {
+                damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+            }
 
-        damaged = false;
+            damaged = false;
+        }
+        
 
        
     }
@@ -225,14 +237,10 @@ public class Player : MonoBehaviour {
 
     void rotateCamera()
     {
-
-       
             mousePos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
             //SCOPE
             Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
             rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg);
-        
-        
     }
 
     //HEALTH FUNCTIONS
@@ -255,8 +263,8 @@ public class Player : MonoBehaviour {
         //Destroy(gameObject);
 
         //RESPAWNEAMOS DESPUES DE UNA PARADA DE TIEMPO
-        //SceneManager.LoadScene(ActualScene.name);
-        PantallaDeMuerte.enabled = true;
+        SceneManager.LoadScene(ActualScene.name);
+        //PantallaDeMuerte.enabled = true;
 
         //transform.position = respawnPoint;
     }
@@ -372,7 +380,6 @@ public class Player : MonoBehaviour {
         }
         else if (col.tag == "rifle")
         {
-            //Debug.Log(counterLevel);
             rifle = 1;
             arma = GameObject.FindGameObjectWithTag("rifle");
             Destroy(arma);
@@ -386,19 +393,17 @@ public class Player : MonoBehaviour {
         {
             Debug.Log(counterLevel);
             counterLevel++;
-            SceneManager.LoadScene("Nivel" + counterLevel);
-            /*switch (counterLevel)
+            if(counterLevel > 1 && counterLevel <= 3)
             {
-                case 1:
-                    counterLevel++;
-                    SceneManager.LoadScene("Nivel" + counterLevel);
-                break;
-                case 2:
-                    counterLevel++;
-                    SceneManager.LoadScene("Nivel" + counterLevel);
-                break;
-            }*/
-                
+                SceneManager.LoadScene("Nivel" + counterLevel);
+            }
+            else if(counterLevel == 4)
+            {
+                //SceneManager.LoadScene("Nivel" + counterLevel);
+                finalImage.enabled = true;
+                final = true;
+            }
+           
         }
 
         if(col.tag == "AmmoNum")
@@ -408,8 +413,13 @@ public class Player : MonoBehaviour {
             AmmoCount.text = counterAmmo.ToString();
 
             //DESTRUIMOS EL PREFAB
-            Destroy(GameObject.Find("AmmoCount(Clone)"));
+            Destroy(col.gameObject);
         }
+
+        /*if(col.name == "wallDestructive")
+        {
+            Destroy(col.gameObject);
+        }*/
     }
 
 
