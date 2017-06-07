@@ -34,6 +34,27 @@ public class Boss : MonoBehaviour
     GameObject PistolaIA5;
     [SerializeField]
     GameObject PistolaIA6;
+    [SerializeField]
+    GameObject PistolaDER1;
+    [SerializeField]
+    GameObject PistolaDER2;
+    [SerializeField]
+    GameObject PistolaDER3;
+    [SerializeField]
+    GameObject PistolaDER4;
+    [SerializeField]
+    GameObject PistolaDER5;
+    [SerializeField]
+    GameObject PistolaIZQ1;
+    [SerializeField]
+    GameObject PistolaIZQ2;
+    [SerializeField]
+    GameObject PistolaIZQ3;
+    [SerializeField]
+    GameObject PistolaIZQ4;
+    [SerializeField]
+    GameObject PistolaIZQ5;
+
 
 
     public GameObject bullet;
@@ -44,6 +65,17 @@ public class Boss : MonoBehaviour
     public Rigidbody2D bulletPrefab3;
     public Rigidbody2D bulletPrefab4;
     public Rigidbody2D bulletPrefab5;
+    public Rigidbody2D bulletPrefabDER1;
+    public Rigidbody2D bulletPrefabDER2;
+    public Rigidbody2D bulletPrefabDER3;
+    public Rigidbody2D bulletPrefabDER4;
+    public Rigidbody2D bulletPrefabDER5;
+    public Rigidbody2D bulletPrefabIZQ1;
+    public Rigidbody2D bulletPrefabIZQ2;
+    public Rigidbody2D bulletPrefabIZQ3;
+    public Rigidbody2D bulletPrefabIZQ4;
+    public Rigidbody2D bulletPrefabIZQ5;
+
     public float bulletSpeed = 500;
     public float attackSpeed = 0.5f;
     public float FireRate = 0.5f;
@@ -191,6 +223,49 @@ public class Boss : MonoBehaviour
             Rigidbody2D bPrefab5 = Instantiate(bulletPrefab, new Vector3(PistolaIA5.transform.position.x, PistolaIA5.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
             bPrefab5.GetComponent<Rigidbody2D>().AddForce(new Vector3(1, -1, 0) * bulletSpeed);
             bPrefab5.transform.Rotate(Vector3.forward * -45);
+
+            //CAÑONES DERECHA
+            Rigidbody2D bPrefabDER1 = Instantiate(bulletPrefab, new Vector3(PistolaDER1.transform.position.x, PistolaDER1.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabDER1.GetComponent<Rigidbody2D>().AddForce(Vector3.right * bulletSpeed);
+            bPrefabDER1.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabDER2 = Instantiate(bulletPrefab, new Vector3(PistolaDER2.transform.position.x, PistolaDER2.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabDER2.GetComponent<Rigidbody2D>().AddForce(Vector3.right * bulletSpeed);
+            bPrefabDER2.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabDER3 = Instantiate(bulletPrefab, new Vector3(PistolaDER3.transform.position.x, PistolaDER3.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabDER3.GetComponent<Rigidbody2D>().AddForce(Vector3.right * bulletSpeed);
+            bPrefabDER3.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabDER4 = Instantiate(bulletPrefab, new Vector3(PistolaDER4.transform.position.x, PistolaDER4.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabDER4.GetComponent<Rigidbody2D>().AddForce(Vector3.right * bulletSpeed);
+            bPrefabDER4.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabDER5 = Instantiate(bulletPrefab, new Vector3(PistolaDER5.transform.position.x, PistolaDER5.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabDER5.GetComponent<Rigidbody2D>().AddForce(Vector3.right * bulletSpeed);
+            bPrefabDER5.transform.Rotate(Vector3.right);
+
+
+            //CAÑONES IZQUIERDA
+            Rigidbody2D bPrefabIZQ1 = Instantiate(bulletPrefab, new Vector3(PistolaIZQ1.transform.position.x, PistolaIZQ1.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabIZQ1.GetComponent<Rigidbody2D>().AddForce(Vector3.left * bulletSpeed);
+            bPrefabIZQ1.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabIZQ2 = Instantiate(bulletPrefab, new Vector3(PistolaIZQ2.transform.position.x, PistolaIZQ2.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabIZQ2.GetComponent<Rigidbody2D>().AddForce(Vector3.left * bulletSpeed);
+            bPrefabIZQ2.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabIZQ3 = Instantiate(bulletPrefab, new Vector3(PistolaIZQ3.transform.position.x, PistolaIZQ3.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabIZQ3.GetComponent<Rigidbody2D>().AddForce(Vector3.left * bulletSpeed);
+            bPrefabIZQ3.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabIZQ4 = Instantiate(bulletPrefab, new Vector3(PistolaIZQ4.transform.position.x, PistolaIZQ4.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabIZQ4.GetComponent<Rigidbody2D>().AddForce(Vector3.left * bulletSpeed);
+            bPrefabIZQ4.transform.Rotate(Vector3.right);
+
+            Rigidbody2D bPrefabIZQ5 = Instantiate(bulletPrefab, new Vector3(PistolaIZQ5.transform.position.x, PistolaIZQ5.transform.position.y, transform.position.z), transform.rotation) as Rigidbody2D;
+            bPrefabIZQ5.GetComponent<Rigidbody2D>().AddForce(Vector3.left * bulletSpeed);
+            bPrefabIZQ5.transform.Rotate(Vector3.right);
         }
     }
 

@@ -32,23 +32,7 @@ public class CamaraSeguir : MonoBehaviour
 
     void Update()
     {
-
-        
-
-       /* if (PlayerPrefs.GetInt("pause") == 1)
-        {
-
-            followPlayer = false;
-        }
-        else {
-            followPlayer = true;
-        }
-
-
-        if (followPlayer == true)*/
-
             camFollowPlayer();
-
     }
 
     public void SetFollowPlayer(bool val)

@@ -416,10 +416,10 @@ public class Player : MonoBehaviour {
             Destroy(col.gameObject);
         }
 
-        /*if(col.name == "wallDestructive")
+        if(col.name == "boss")
         {
-            Destroy(col.gameObject);
-        }*/
+            Death();
+        }
     }
 
 
